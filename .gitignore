@@ -1,0 +1,12 @@
+target/
+.project
+.settings
+.classpath
+log/
+venv/
+
+.idea/
+*.iml
+deploy.sh
+
+application-dev.properties
