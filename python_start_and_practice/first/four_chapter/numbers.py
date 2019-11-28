@@ -14,3 +14,13 @@ suquares = list()
 for value in range(1, 11):
     suquares.append(value ** 2)
 print(suquares)
+
+digits = [1, 2, 3, 4, 5, 6]
+print(min(digits))
+print(max(digits))
+print(sum(digits))
+print(min(1, 3, 5, 6))
+
+# 列表解析:一行代码生成平方数列表
+suquares = [value ** 2 for value in range(1, 11)]
+print(suquares)
