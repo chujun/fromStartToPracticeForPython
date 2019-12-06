@@ -29,16 +29,26 @@ def validate(response):
 
 
 domain_url = 'http://localhost:8080'
-tic_service = domain_url + "/trade-in-center"
-receipt_notify_url = tic_service + "/receipt/trade-in-order/notify/"
-update_refund_status_url = tic_service + "/int/trade-in-order/refund-transaction/{0}/update-status"
+tic_service_url = domain_url + "/trade-in-center"
+receipt_notify_url = tic_service_url + "/receipt/trade-in-order/notify/"
+update_refund_status_url = tic_service_url + "/int/trade-in-order/refund-transaction/{0}/update-status"
 
 receipt_status_enum = {
     'success': 8
 }
 
+
+def mock_receipt_notify_refund_success(out_serial_no):
+    post(receipt_notify_url, {"receiptBill": {"outSerialNo": out_serial_no, "status": receipt_status_enum['success']}})
+
+
+def mock_update_refund_transaction_status(trade_in_order_refund_transaction_id):
+    post(update_refund_status_url.format(str(trade_in_order_refund_transaction_id)))
+
+
 if __name__ == '__main__':
     print('start script:')
-    # post(receipt_notify_url, {"receiptBill": {"outSerialNo": 1, "status": receipt_status_enum['success']}})
-    real_update_refund_status_url = update_refund_status_url.format('155')
-    post(real_update_refund_status_url)
+    out_serial_no = '20190124155711508364091010'
+    trade_in_order_refund_transaction_id = 155
+    mock_receipt_notify_refund_success(out_serial_no)
+    mock_update_refund_transaction_status(trade_in_order_refund_transaction_id)
