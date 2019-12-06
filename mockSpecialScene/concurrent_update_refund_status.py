@@ -11,6 +11,9 @@ def post(url, jsonData=None, header=None):
     validate(response)
 
 
+success_code = 200
+
+
 def validate(response):
     if not response:
         raise RuntimeError('not exist response')
@@ -18,6 +21,9 @@ def validate(response):
     if not response.content:
         raise RuntimeError('response not exist content')
     print(response)
+    dist_data = response.json()
+    if dist_data['code'] != success_code:
+        raise RuntimeError('response code error' + str(dist_data))
     data = str(response.content, encoding="utf-8")
     print(data)
 
