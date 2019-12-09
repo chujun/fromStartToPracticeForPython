@@ -32,6 +32,8 @@ domain_url = 'http://localhost:8080'
 tic_service_url = domain_url + "/trade-in-center"
 receipt_notify_url = tic_service_url + "/receipt/trade-in-order/notify/"
 update_refund_status_url = tic_service_url + "/int/trade-in-order/refund-transaction/{0}/update-status"
+update_refund_status_by_out_serial_no_url = \
+    tic_service_url + "/int/trade-in-order/refund-transaction/out-serial-no/{0}/update-status"
 
 receipt_status_enum = {
     'success': 7
@@ -61,8 +63,8 @@ class UpdateStatusThread(threading.Thread):
     def run(self):
         print_time("开始线程：" + self.name)
         for count in range(0, self.counter):
-            print_time("开始循环调用mock_update_refund_transaction_status" + str(count))
-            mock_update_refund_transaction_status()
+            print_time("开始循环调用mock_update_refund_transaction_status_by_out_serial_no" + str(count))
+            mock_update_refund_transaction_status_by_out_serial_no()
         print_time("退出线程：" + self.name)
 
 
@@ -74,6 +76,11 @@ def mock_receipt_notify_refund_success():
 def mock_update_refund_transaction_status():
     trade_in_order_refund_transaction_id = 186
     post(update_refund_status_url.format(str(trade_in_order_refund_transaction_id)))
+
+
+def mock_update_refund_transaction_status_by_out_serial_no():
+    out_serial_no = '201912061718389392190201000'
+    post(update_refund_status_by_out_serial_no_url.format(str(out_serial_no)))
 
 
 def print_time(string):
