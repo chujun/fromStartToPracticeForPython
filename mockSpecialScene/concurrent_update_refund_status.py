@@ -87,7 +87,7 @@ if __name__ == '__main__':
     # 创建新线程
     thread1 = NotifyThread(1, 1)
     thread1.start()
-    for t in range(0, 10):
+    for t in range(0, 4):
         thread2 = UpdateStatusThread(2, 10)
         thread2.start()
     # 开启新线程
