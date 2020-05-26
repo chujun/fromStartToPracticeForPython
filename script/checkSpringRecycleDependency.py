@@ -8,7 +8,7 @@ def get_file_content(file_name):
 
 
 if __name__ == '__main__':
-    file_name = '/Users/chujun/PycharmProjects/ahs/script/data/error/dependency20200523.log'
+    file_name = '/Users/chujun/PycharmProjects/ahs/script/data/error/dependency/20200526am.log'
     content = get_file_content(file_name)
     beans = []
     for string in content.split(" "):
