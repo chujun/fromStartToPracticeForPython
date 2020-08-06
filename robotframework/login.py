@@ -9,6 +9,7 @@ DATABASE_FILE = os.path.join(tempfile.gettempdir(), 'robotframework-quickstart-d
 
 
 class UserDataBase(object):
+
     def __init__(self, db_file=DATABASE_FILE):
         self.users = self._read_users(db_file)
         self.db_file = db_file
@@ -20,7 +21,7 @@ class UserDataBase(object):
             with open(path) as file:
                 for row in file.readlines():
                     user = User(*row.rstrip('\r\n').split('\t'))
-                    users[user.username] = users
+                    users[user.username] = user
         return users
 
     def create_user(self, username, password):
