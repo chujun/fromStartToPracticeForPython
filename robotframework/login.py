@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# encoding=utf-8
 from __future__ import print_function
 import os.path
 import sys
@@ -13,6 +14,7 @@ class UserDataBase(object):
     def __init__(self, db_file=DATABASE_FILE):
         self.users = self._read_users(db_file)
         self.db_file = db_file
+        # 打印临时文件目录,可以查看你存储的内容
         print('db_file: %s' % self.db_file)
 
     def _read_users(self, path):
@@ -48,6 +50,25 @@ class UserDataBase(object):
     def __exit__(self, *exc_info):
         self.save()
 
+    def login(self, username, password):
+        if self._is_valid_user(username, password):
+            self.users[username].status = 'Active'
+            return 'Logged In'
+        return 'Access Denied'
+
+    def _is_valid_user(self, username, password):
+        return username in self.users and self.users[username].password == password
+
+    def change_password(self, username, old_pwd, new_pwd):
+        try:
+            if not self._is_valid_user(username, old_pwd):
+                raise ValueError('Access Denied')
+            self.users[username].password = new_pwd
+        except ValueError as err:
+            return 'Changing password failed:%s' % err
+        else:
+            return 'Success'
+
 
 class User(object):
 
@@ -62,13 +83,43 @@ class User(object):
 
     @password.setter
     def password(self, password):
-        # self._validate_password(password)
+        self._validate_password(password)
         self._password = password
+
+    def _validate_password(self, password):
+        if not (7 <= len(password) <= 12):
+            raise ValueError('Password must be 7-12 characters longs')
+        if not self._validate_password_chars(password):
+            raise ValueError('Password must be a combination of lowercase '
+                             'and  uppercase letters and numbers')
+
+    def _validate_password_chars(self, password):
+        has_lower = has_upper = has_number = False
+        for char in password:
+            if char.islower():
+                has_lower = True
+            elif char.isupper():
+                has_upper = True
+            elif char.isdigit():
+                has_number = True
+            else:
+                return False
+        return has_lower and has_upper and has_number
+
+
+def login(username, password):
+    with UserDataBase() as db:
+        print(db.login(username, password))
 
 
 def create_user(username, password):
     with UserDataBase() as db:
         print(db.create_user(username, password))
+
+
+def change_password(username, old_pwd, new_pwd):
+    with UserDataBase() as db:
+        print(db.change_password(username, old_pwd, new_pwd))
 
 
 def help():
@@ -77,15 +128,15 @@ def help():
 
 if __name__ == '__main__':
     actions = {'create': create_user,
-               # 'login': login,
-               # 'change-password': change_password,
+               'login': login,
+               'change-password': change_password,
                'help': help}
     try:
         action = sys.argv[1]
     except IndexError:
         action = 'help'
     args = sys.argv[2:]
-    # try:
-    actions[action](*args)
-    # except(KeyError, TypeError):
-    # help()
+    try:
+        actions[action](*args)
+    except(KeyError, TypeError):
+        help()
