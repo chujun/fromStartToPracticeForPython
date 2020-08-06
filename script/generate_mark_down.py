@@ -20,7 +20,8 @@ def generate_mark_down(dir_name):
 
 if __name__ == '__main__':
     print("start")
-    dir_name = '/Users/chujun/my/project/ahs/trade-in-center/trade-in-center-model/src/main/java/com/aihuishou/service/tic/model/enumerate/'
+    #dir_name = '/Users/chujun/my/project/ahs/trade-in-center/trade-in-center-model/src/main/java/com/aihuishou/service/tic/model/enumerate/'
+    dir_name ='/Users/chujun/my/project/ahs/trade-in-center/trade-in-center-service/src/main/java/com/aihuishou/service/tic/enumerate/'
     content = generate_mark_down(dir_name)
     print(content)
     with open('a.md', 'w+') as new_file:
