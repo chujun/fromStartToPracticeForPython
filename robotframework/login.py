@@ -90,8 +90,7 @@ class User(object):
         if not (7 <= len(password) <= 12):
             raise ValueError('Password must be 7-12 characters longs')
         if not self._validate_password_chars(password):
-            raise ValueError('Password must be a combination of lowercase '
-                             'and  uppercase letters and numbers')
+            raise ValueError('Password must be a combination of lowercase and uppercase letters and numbers')
 
     def _validate_password_chars(self, password):
         has_lower = has_upper = has_number = False
