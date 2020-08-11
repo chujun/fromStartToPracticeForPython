@@ -9,6 +9,7 @@ User cannot log in with bad password
     Attempt to Login with Credentials    betty    wrong
     Status Should Be    Access Denied
 
+#Higher-level tests
 *** Test Cases ***
 User can change password
     Given a user has a valid account
@@ -16,12 +17,32 @@ User can change password
     Then she can log in with the new password
     And she cannot use the old password anymore
 
+#Data-driven tests
+
+*** Test Cases ***
+Invalid password
+    [Template]      Creating user with invalid password should fail
+    abCD5            ${PWD INVALID LENGTH}
+    abCD567890123    ${PWD INVALID LENGTH}
+    123DEFG          ${PWD INVALID CONTENT}
+    abcd56789        ${PWD INVALID CONTENT}
+    AbCdEfGh         ${PWD INVALID CONTENT}
+    abCD56+          ${PWD INVALID CONTENT}
+
 *** Keywords ***
 Clear login database
     Remove file     ${DATABASE FILE}
 Create valid user
     [Arguments]     ${username}     ${password}
     Create user     ${username}     ${password}
+Creating user with invalid password should fail
+    [Arguments]    ${password}    ${error}
+    Create user    example    ${password}
+    Status should be    Creating user failed: ${error}
+Login
+    [Arguments]    ${username}    ${password}
+    Attempt to login with credentials    ${username}    ${password}
+    Status should be    Logged In
 # Keywords below used by higher level tests. Notice how given/when/then/and
 # prefixes can be dropped. And this is a comment.
 A user has a valid account

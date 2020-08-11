@@ -30,7 +30,7 @@ class UserDataBase(object):
         try:
             user = User(username, password)
         except ValueError as err:
-            return 'Creating user failed:%s' % err
+            return 'Creating user failed: %s' % err
         self.users[user.username] = user
         return 'SUCCESS'
 
@@ -88,7 +88,7 @@ class User(object):
 
     def _validate_password(self, password):
         if not (7 <= len(password) <= 12):
-            raise ValueError('Password must be 7-12 characters longs')
+            raise ValueError('Password must be 7-12 characters long')
         if not self._validate_password_chars(password):
             raise ValueError('Password must be a combination of lowercase and uppercase letters and numbers')
 
