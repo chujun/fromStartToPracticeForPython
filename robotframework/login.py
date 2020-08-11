@@ -15,7 +15,7 @@ class UserDataBase(object):
         self.users = self._read_users(db_file)
         self.db_file = db_file
         # 打印临时文件目录,可以查看你存储的内容
-        print('db_file: %s' % self.db_file)
+        # print('db_file: %s' % self.db_file)
 
     def _read_users(self, path):
         users = {}
@@ -67,7 +67,7 @@ class UserDataBase(object):
         except ValueError as err:
             return 'Changing password failed:%s' % err
         else:
-            return 'Success'
+            return 'SUCCESS'
 
 
 class User(object):

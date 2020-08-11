@@ -10,3 +10,10 @@ venv/
 deploy.sh
 
 application-dev.properties
+
+
+
+lib/
+log.html
+output.xml
+report.html
