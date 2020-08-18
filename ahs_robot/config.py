@@ -7,7 +7,7 @@ config = configparser.ConfigParser()
 env = 'uat'
 print(os.getcwd())
 # TODO:cj modify ahs_robot
-config_file = os.path.join(os.getcwd(), 'ahs_robot', 'config', 'config.%s.ini' % env)
+config_file = os.path.join(os.getcwd(), 'config', 'config.%s.ini' % env)
 print(config_file)
 config.read(config_file, encoding='utf8')
 # -sections得到所有的section，并以列表的形式返回
