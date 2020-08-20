@@ -6,6 +6,10 @@ Library     String
 Library     Collections
 
 *** Test Cases ***
+Calss_01_测试条件语句
+    ${a}  set variable  1
+    Run Keyword If  ${a}==1     log     ${a}
+    ...  ELSE    log ${a}
 Class_01_测试get请求
     create session  example_robotframework  http://192.168.103.194:8098  timeout=30
     ${resp}  get_request     example_robotframework  trade-in-center/v2/base-trade-in-orders/detail/20200728210218871717
@@ -20,6 +24,8 @@ Class_01_测试get请求带param
 Class_01_自定义get请求
     ${resp}  my_get_request    http://192.168.103.194:8098    trade-in-center/erp/orders/20200728210218871717/traces
     ...  ${None}   isDesc=true
+    should be true  200==${resp.status_code}
+    log     ${resp.content}
 Class_02_测试post请求
     create session  example_robotframework  http://192.168.103.194:8098  timeout=30
     ${json}  create dictionary
@@ -35,8 +41,9 @@ my_get_request
     #evaluate   sys.setdefaultencoding('utf-8')  sys
     #处理请求header
     ${header_dict}  create dictionary   Content-Type=application/json
-    run keyword if  ${headers}==${None}    Log   没有添加自定义header
-    ...  else   run keyword  add_header  ${headers}  ${header_dict}
+    run keyword if  ${headers}==${None}    log   没有添加自定义header
+    # 'Else' is a reserved keyword. It must be in uppercase (ELSE) when used as a marker with 'Run Keyword If'.
+    ...     ELSE       run keyword     add_header     ${headers}      ${header_dict}
     #处理Cookie
 #    ${cookie_dict}  create dictionary
 #    run keyword if  ${cookie}==${None}  Log     没有添加cookie信息
@@ -44,7 +51,7 @@ my_get_request
     #创建session
     create session  example_robotframework  ${host}     timeout=${timeout}
     #发起GET请求
-    ${resp}     RequestsLibrary.Get_Request     example_robotframe  ${path}     headers=${header_dict}  params=${params}
+    ${resp}     RequestsLibrary.Get_Request     example_robotframework  ${path}     headers=${header_dict}  params=${params}
     [Return]  ${resp}
 my_Post_Request
     [Arguments]     ${host}     ${path}     ${datas}        ${params}=${EMPTY}      ${headers}=None     ${cookies}=None     ${timeout}=30
@@ -66,12 +73,12 @@ my_Post_Request
     [Return]   ${resp}
 
 add_header
-    [Arguments]   ${dict1}  ${dict2}
+    [Arguments]   ${dict1}      ${dict2}
     [Documentation]  *遍历字典变量dic1，将dict1中的值添加到dict2中*
     log  在请求中添加自定义header
-    ${items}    get dictionary items        ${dict1}
-    :FOR    ${index}    ${key}      ${value}  In enumerate    @{items}
-    \   set to dictionary  ${dic2}      ${key}=${value}
+#    ${items}    get dictionary items        ${dict1}
+#    :FOR    ${index}    ${key}      ${value}   In enumerate    @{items}
+#    \   set to dictionary  ${dict2}      ${key}=${value}
 #add_cookies
 #    [Arguments]  ${cookies}     ${cookiedict}
 #    [Documentation]  *处理Cookie*
